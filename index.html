@@ -1,14 +1,90 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.65">
-  <style type="text/css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stonehenge Garching</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Georgia', serif;
+    }
+    .logo {
+      width: 100%;
+      height: 100vh;
+      background: url('/assets/logo.png') center center no-repeat;
+      background-size: contain;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 50px;
+    }
+    .links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5em;
+      margin: 10px;
+      transition: color 0.3s;
+    }
+    .links a:hover {
+      color: gray;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+    }
+    .header img {
+      height: 60px;
+    }
+    .content {
+      padding: 40px;
+      font-size: 1.2em;
+      line-height: 1.6em;
+    }
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gallery img {
+      max-width: 80%;
+      max-height: 80vh;
+      margin-bottom: 20px;
+    }
+    .gallery-controls {
+      display: flex;
+      gap: 20px;
+    }
+    .gallery-controls button {
+      background: none;
+      border: 1px solid white;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .gallery-controls button:hover {
+      background-color: white;
+      color: black;
+    }
   </style>
 </head>
 <body>
+  <!-- Startseite -->
+  <div class="logo">
+    <div class="links">
+      <a href="geschichte.html">Geschichte</a>
+      <a href="galerie.html">Galerie</a>
+    </div>
+  </div>
 </body>
 </html>
+
