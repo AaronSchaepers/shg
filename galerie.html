@@ -1,14 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.65">
-  <style type="text/css">
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie – Stonehenge Garching</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    let current = 0;
+    const images = [
+      'assets/pic1.jpg'
+    ];
+
+    function showImage(index) {
+      const img = document.getElementById('gallery-image');
+      img.src = images[index];
+    }
+
+    function next() {
+      current = (current + 1) % images.length;
+      showImage(current);
+    }
+
+    function prev() {
+      current = (current - 1 + images.length) % images.length;
+      showImage(current);
+    }
+
+    window.onload = () => showImage(current);
+  </script>
 </head>
 <body>
+  <div class="header">
+    <a href="index.html"><img src="assets/logo.png" alt="Logo" /></a>
+  </div>
+  <div class="gallery">
+    <img id="gallery-image" src="" alt="Galeriebild" />
+    <div class="gallery-controls">
+      <button onclick="prev()">← Zurück</button>
+      <button onclick="next()">Weiter →</button>
+    </div>
+  </div>
 </body>
 </html>
