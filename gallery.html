@@ -9,18 +9,18 @@
       margin: 0;
       background-color: #000;
       color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: Georgia, serif; /* angepasst wie in index.html */
     }
 
     .header {
       display: flex;
       align-items: center;
-      padding: 10px 20px;
-      gap: 15px;
+      padding: 20px 30px;
+      gap: 20px;
     }
 
     .header img {
-      height: 40px;
+      height: 120px; /* vorher 40px → jetzt ca. 3x größer */
     }
 
     .header-text {
@@ -30,8 +30,8 @@
     }
 
     .header-text span {
-      font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 2rem; /* größer wie in index.html */
+      font-weight: normal;
     }
 
     .gallery {
@@ -83,7 +83,7 @@
     const imageList = [
       'assets/gallery/image1.jpg',
       'assets/gallery/image2.png'
-      // hier kannst du einfach weitere eintragen
+      // weitere Bilder hier hinzufügen
     ];
 
     const gallery = document.getElementById('gallery');
@@ -92,7 +92,7 @@
       const img = document.createElement('img');
       img.src = src;
       img.alt = "Galeriebild";
-      img.loading = "lazy"; // Performance!
+      img.loading = "lazy";
       gallery.appendChild(img);
     });
   </script>
