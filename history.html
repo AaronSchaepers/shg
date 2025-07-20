@@ -6,9 +6,38 @@ layout: none
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Geschichte – Stonehenge Garching</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Georgia, serif;
+    }
+
+    .content {
+      padding: 20px 30px;
+    }
+
+    .content p {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(4px);
+      transition: 
+        opacity 0.8s ease-out, 
+        transform 0.8s ease-out, 
+        filter 0.8s ease-out;
+      margin-bottom: 1.5em;
+    }
+
+    .content p.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  </style>
 </head>
 <body>
   {% include header.html %}
@@ -23,6 +52,28 @@ layout: none
       Die stehenden Steine wurden von lokalen Künstler:innen gestaltet und tragen ihre ganz eigene Bedeutung. Sie erinnern an alte keltische Rituale,
       an astronomisches Wissen und an eine Zeit, in der Menschen und Erde in engerem Austausch standen.
     </p>
+    <p>
+      Weiterer Textabsatz, der Stück für Stück sichtbar wird, wenn du nach unten scrollst.
+    </p>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const paragraphs = document.querySelectorAll('.content p');
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      paragraphs.forEach(p => observer.observe(p));
+    });
+  </script>
 </body>
 </html>
