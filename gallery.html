@@ -9,7 +9,7 @@
       margin: 0;
       background-color: #000;
       color: #fff;
-      font-family: Georgia, serif; /* angepasst wie in index.html */
+      font-family: Georgia, serif;
     }
 
     .header {
@@ -20,7 +20,7 @@
     }
 
     .header img {
-      height: 120px; /* vorher 40px → jetzt ca. 3x größer */
+      height: 120px;
     }
 
     .header-text {
@@ -30,7 +30,7 @@
     }
 
     .header-text span {
-      font-size: 2rem; /* größer wie in index.html */
+      font-size: 2rem;
       font-weight: normal;
     }
 
@@ -47,6 +47,14 @@
       break-inside: avoid;
       box-shadow: 0 0 10px rgba(255,255,255,0.15);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .gallery img.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
     .gallery img:hover {
@@ -79,7 +87,6 @@
   <div class="gallery" id="gallery"></div>
 
   <script>
-    // Liste der Bilder (alle in assets/gallery/)
     const imageList = [
       'assets/gallery/image1.jpg',
       'assets/gallery/image2.png'
@@ -88,6 +95,7 @@
 
     const gallery = document.getElementById('gallery');
 
+    // Bilder einfügen
     imageList.forEach(src => {
       const img = document.createElement('img');
       img.src = src;
@@ -95,6 +103,22 @@
       img.loading = "lazy";
       gallery.appendChild(img);
     });
+
+    // Animation per IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // einmal anzeigen, dann nicht mehr beobachten
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    // Alle Galerie-Bilder beobachten
+    const images = document.querySelectorAll('.gallery img');
+    images.forEach(img => observer.observe(img));
   </script>
 </body>
 </html>
