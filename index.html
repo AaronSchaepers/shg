@@ -10,6 +10,7 @@
       margin: 0;
       padding: 0;
     }
+
     body {
       background-color: black;
       color: white;
@@ -17,61 +18,55 @@
       overflow-x: hidden;
     }
 
-    /* Logo Container */
     .logo-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      z-index: 1000;
       pointer-events: none;
+      z-index: 1000;
     }
 
-    /* Logo Image */
-    .logo {
+    .logo-link {
+      position: absolute;
       background: url('assets/logo.png') center center no-repeat;
       background-size: contain;
-      width: 900px;  /* 3x larger than original 300px */
+      width: 900px;
       height: 900px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: translate(calc(50vw - 450px), calc(50vh - 450px)) scale(1); /* centered */
-      transition: transform 0.6s ease;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      /* REMOVED transform translate to position by top-left */
+      pointer-events: auto;
+      transition: none; /* transitions done via JS for smooth scroll */
     }
 
-    .logo.shrink {
-      transform: translate(0px, 0px) scale(1); /* Top-left and 3x bigger than before */
-    }
-
-    /* Scroll Content */
     .scroll-content {
-      margin-top: 100vh;
-      padding: 100px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 2em;
+      max-width: 800px;
+      margin: 120vh auto 0 auto;
       text-align: center;
-      min-height: 300vh;
+      font-size: 2em;
+      line-height: 1.4em;
+      padding-bottom: 15vh;
     }
 
     .sentence {
       opacity: 0;
-      transition: opacity 1s ease;
-      margin-bottom: 100px;
-      height: 1em;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      margin-bottom: 20px;
     }
 
     .sentence.visible {
       opacity: 1;
+      transform: translateY(0);
     }
 
     .links {
       opacity: 0;
       transition: opacity 1s ease;
-      margin-top: 100px;
+      margin-top: 20vh;
     }
 
     .links.visible {
@@ -82,8 +77,8 @@
       color: white;
       text-decoration: none;
       font-size: 1.5em;
-      margin: 10px;
-      display: block;
+      margin: 10px 20px;
+      display: inline-block;
       transition: color 0.3s;
     }
 
@@ -93,17 +88,18 @@
   </style>
 </head>
 <body>
-  <!-- Logo -->
+
+  <!-- Clickable logo -->
   <div class="logo-container">
-    <div class="logo" id="logo"></div>
+    <a href="index.html" class="logo-link" id="logo"></a>
   </div>
 
-  <!-- Scroll-Activated Content -->
+  <!-- Scroll content -->
   <div class="scroll-content">
-    <div class="sentence" id="sentence1">Forged in the depths of time</div>
-    <div class="sentence" id="sentence2">A silent witness that endured the ages</div>
-    <div class="sentence" id="sentence3">Endowed with wisdom long since lost</div>
-    <div class="sentence" id="sentence4">A deep mystery today.</div>
+    <div class="sentence">Forged in the depths of time.</div>
+    <div class="sentence">A silent witness that endured the ages.</div>
+    <div class="sentence">Endowed with wisdom long since lost.</div>
+    <div class="sentence">A deep mystery today.</div>
 
     <div class="links" id="finalLinks">
       <a href="gallery.html">Gallery</a>
@@ -113,42 +109,55 @@
     </div>
   </div>
 
-  <!-- Script -->
   <script>
     const logo = document.getElementById('logo');
-    const sentences = [
-      document.getElementById('sentence1'),
-      document.getElementById('sentence2'),
-      document.getElementById('sentence3'),
-      document.getElementById('sentence4')
-    ];
+    const sentences = document.querySelectorAll('.sentence');
     const finalLinks = document.getElementById('finalLinks');
 
     window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
+      const scrollY = Math.min(window.scrollY, 300);
+      const progress = scrollY / 300;
 
-      // Shrink logo and move to top-left
-      if (scrollY > 10) {
-        logo.classList.add('shrink');
-      } else {
-        logo.classList.remove('shrink');
-      }
+      // Sizes: large = 900px, small = 270px (3x smaller)
+      const startSize = 900;
+      const endSize = 270;
+      const size = startSize + (endSize - startSize) * progress;
 
-      // Fade in sentences
-      const spacing = 400;
-      sentences.forEach((el, index) => {
-        const start = window.innerHeight + index * spacing;
-        const end = start + spacing;
-        if (scrollY >= start && scrollY <= end) {
-          el.classList.add('visible');
+      // Calculate centered position for the current size
+      const startLeft = (window.innerWidth / 2) - (size / 2);
+      const startTop = (window.innerHeight / 2) - (size / 2);
+
+      // Final position near top-left corner with some margin
+      const endLeft = -10;
+      const endTop = -50;
+
+      // Interpolate position and size based on scroll progress
+      const left = startLeft * (1 - progress) + endLeft * progress;
+      const top = startTop * (1 - progress) + endTop * progress;
+
+      logo.style.width = `${size}px`;
+      logo.style.height = `${size}px`;
+      logo.style.left = `${left}px`;
+      logo.style.top = `${top}px`;
+      logo.style.transform = 'none';
+
+      // Show sentences based on scroll
+      const scrollPos = window.scrollY;
+      sentences.forEach((sentence, index) => {
+        const trigger = 100 + index * 150; // tweak spacing
+        if (scrollPos > trigger) {
+          sentence.classList.add('visible');
         } else {
-          el.classList.remove('visible');
+          sentence.classList.remove('visible');
         }
       });
 
-      // Show final links
-      const showLinksAt = window.innerHeight + sentences.length * spacing;
-      finalLinks.classList.toggle('visible', scrollY > showLinksAt);
+      // Show links after last sentence visible
+      if (sentences[sentences.length - 1].classList.contains('visible')) {
+        finalLinks.classList.add('visible');
+      } else {
+        finalLinks.classList.remove('visible');
+      }
     });
   </script>
 </body>
