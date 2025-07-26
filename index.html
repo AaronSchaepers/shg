@@ -17,7 +17,7 @@
       overflow-x: hidden;
     }
 
-    /* Logo Container and Smooth Movement */
+    /* Logo container */
     .logo-container {
       position: fixed;
       top: 0;
@@ -28,23 +28,24 @@
       pointer-events: none;
     }
 
+    /* Logo */
     .logo {
       background: url('assets/logo.png') center center no-repeat;
       background-size: contain;
       width: 300px;
       height: 300px;
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(1);
+      top: 20px;
+      left: 20px;
+      transform: translate(calc(50vw - 170px), calc(50vh - 170px)) scale(1);
       transition: transform 0.6s ease;
     }
 
     .logo.shrink {
-      transform: translate(20px, 20px) scale(0.33);
+      transform: translate(0, 0) scale(0.33);
     }
 
-    /* Scroll-based content */
+    /* Content that appears when scrolling */
     .scroll-content {
       margin-top: 100vh;
       padding: 100px 20px;
@@ -89,12 +90,12 @@
   </style>
 </head>
 <body>
-  <!-- Logo Section -->
+  <!-- Logo Area -->
   <div class="logo-container">
     <div class="logo" id="logo"></div>
   </div>
 
-  <!-- Scroll-activated Content -->
+  <!-- Scroll-Activated Content -->
   <div class="scroll-content">
     <div class="sentence" id="sentence1">Forged in the depths of time</div>
     <div class="sentence" id="sentence2">A silent witness that endured the ages</div>
@@ -123,14 +124,14 @@
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
 
-      // Smooth logo transition
+      // Move and shrink logo on scroll
       if (scrollY > 10) {
         logo.classList.add('shrink');
       } else {
         logo.classList.remove('shrink');
       }
 
-      // Fade in sentences one by one
+      // Sentence fade logic
       const spacing = 400;
       sentences.forEach((el, index) => {
         const start = window.innerHeight + index * spacing;
@@ -142,13 +143,9 @@
         }
       });
 
-      // Show final links
+      // Show links after last sentence
       const showLinksAt = window.innerHeight + sentences.length * spacing;
-      if (scrollY > showLinksAt) {
-        finalLinks.classList.add('visible');
-      } else {
-        finalLinks.classList.remove('visible');
-      }
+      finalLinks.classList.toggle('visible', scrollY > showLinksAt);
     });
   </script>
 </body>
