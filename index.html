@@ -17,7 +17,7 @@
       overflow-x: hidden;
     }
 
-    /* Logo container */
+    /* Logo Container */
     .logo-container {
       position: fixed;
       top: 0;
@@ -28,24 +28,24 @@
       pointer-events: none;
     }
 
-    /* Logo */
+    /* Logo Image */
     .logo {
       background: url('assets/logo.png') center center no-repeat;
       background-size: contain;
-      width: 300px;
-      height: 300px;
+      width: 900px;  /* 3x larger than original 300px */
+      height: 900px;
       position: absolute;
-      top: 20px;
-      left: 20px;
-      transform: translate(calc(50vw - 170px), calc(50vh - 170px)) scale(1);
+      top: 0;
+      left: 0;
+      transform: translate(calc(50vw - 450px), calc(50vh - 450px)) scale(1); /* centered */
       transition: transform 0.6s ease;
     }
 
     .logo.shrink {
-      transform: translate(0, 0) scale(0.33);
+      transform: translate(0px, 0px) scale(1); /* Top-left and 3x bigger than before */
     }
 
-    /* Content that appears when scrolling */
+    /* Scroll Content */
     .scroll-content {
       margin-top: 100vh;
       padding: 100px 20px;
@@ -63,6 +63,7 @@
       margin-bottom: 100px;
       height: 1em;
     }
+
     .sentence.visible {
       opacity: 1;
     }
@@ -72,6 +73,7 @@
       transition: opacity 1s ease;
       margin-top: 100px;
     }
+
     .links.visible {
       opacity: 1;
     }
@@ -84,13 +86,14 @@
       display: block;
       transition: color 0.3s;
     }
+
     .links a:hover {
       color: gray;
     }
   </style>
 </head>
 <body>
-  <!-- Logo Area -->
+  <!-- Logo -->
   <div class="logo-container">
     <div class="logo" id="logo"></div>
   </div>
@@ -110,7 +113,7 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
+  <!-- Script -->
   <script>
     const logo = document.getElementById('logo');
     const sentences = [
@@ -124,14 +127,14 @@
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
 
-      // Move and shrink logo on scroll
+      // Shrink logo and move to top-left
       if (scrollY > 10) {
         logo.classList.add('shrink');
       } else {
         logo.classList.remove('shrink');
       }
 
-      // Sentence fade logic
+      // Fade in sentences
       const spacing = 400;
       sentences.forEach((el, index) => {
         const start = window.innerHeight + index * spacing;
@@ -143,7 +146,7 @@
         }
       });
 
-      // Show links after last sentence
+      // Show final links
       const showLinksAt = window.innerHeight + sentences.length * spacing;
       finalLinks.classList.toggle('visible', scrollY > showLinksAt);
     });
