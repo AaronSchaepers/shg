@@ -5,56 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Galerie – Stonehenge Garching</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       background-color: #000;
       color: #fff;
       font-family: Georgia, serif;
+      overflow-x: hidden;
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      padding: 20px 30px;
-      gap: 20px;
-    }
-
-    .header img {
-      height: 120px;
-    }
-
-    .header-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
-
-    .header-text span {
-      font-size: 2rem;
-      font-weight: normal;
+    .logo {
+      position: fixed;
+      top: -50px;
+      left: -10px;
+      width: 270px;
+      height: 270px;
+      background: url('assets/logo.png') center center no-repeat;
+      background-size: contain;
+      z-index: 1000;
+      pointer-events: auto;
+      display: block;
+      text-indent: -9999px;
     }
 
     .gallery {
-      column-count: 3;
-      column-gap: 1em;
-      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1em;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 250px 20px 100px calc(270px + 30px);
     }
 
     .gallery img {
       width: 100%;
-      margin-bottom: 1em;
+      height: auto;
       border-radius: 8px;
-      break-inside: avoid;
       box-shadow: 0 0 10px rgba(255,255,255,0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
       opacity: 0;
       transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      display: block;
+      cursor: pointer;
     }
 
     .gallery img.visible {
       opacity: 1;
       transform: translateY(0);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
     .gallery img:hover {
@@ -62,63 +63,93 @@
       box-shadow: 0 0 25px rgba(255,255,255,0.3);
     }
 
-    @media (max-width: 768px) {
-      .gallery {
-        column-count: 2;
-      }
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    @media (max-width: 480px) {
+    .lightbox.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.5);
+    }
+
+    @media (max-width: 768px) {
       .gallery {
-        column-count: 1;
+        padding-left: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <a href="index.html"><img src="assets/logo.png" alt="Logo" /></a>
-    <div class="header-text">
-      <span>Stonehenge</span>
-      <span>Garching</span>
-    </div>
-  </div>
+  <a href="index.html" class="logo">Home</a>
 
   <div class="gallery" id="gallery"></div>
 
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Zoomed image" id="lightbox-img" />
+  </div>
+
   <script>
     const imageList = [
-      'assets/gallery/image1.jpg',
-      'assets/gallery/image2.png'
-      // weitere Bilder hier hinzufügen
+      'assets/gallery/image1.png',
+      'assets/gallery/image2.png',
+      'assets/gallery/image3.png',
+      'assets/gallery/image4.png'
     ];
 
     const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
 
-    // Bilder einfügen
-    imageList.forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = "Galeriebild";
-      img.loading = "lazy";
-      gallery.appendChild(img);
-    });
-
-    // Animation per IntersectionObserver
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // einmal anzeigen, dann nicht mehr beobachten
+          observer.unobserve(entry.target);
         }
       });
-    }, {
-      threshold: 0.1
+    }, { threshold: 0.1 });
+
+    imageList.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.alt = "Galeriebild";
+      img.loading = "lazy";
+      img.classList.add('zoomable');
+      img.onload = () => observer.observe(img);
+      img.addEventListener('click', () => {
+        lightboxImg.src = src;
+        lightbox.classList.add('visible');
+      });
+      gallery.appendChild(img);
     });
 
-    // Alle Galerie-Bilder beobachten
-    const images = document.querySelectorAll('.gallery img');
-    images.forEach(img => observer.observe(img));
+    // Close lightbox on click outside image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target !== lightboxImg) {
+        lightbox.classList.remove('visible');
+        lightboxImg.src = '';
+      }
+    });
   </script>
 </body>
 </html>
