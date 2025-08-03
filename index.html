@@ -2,8 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galerie – Stonehenge Garching</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stonehenge Garching</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,142 +12,153 @@
     }
 
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: Georgia, serif;
+      background-color: black;
+      color: white;
+      font-family: 'Georgia', serif;
       overflow-x: hidden;
     }
 
-    .logo {
-      position: fixed;
-      top: -50px;
-      left: -10px;
-      width: 270px;
-      height: 270px;
-      background: url('assets/logo.png') center center no-repeat;
-      background-size: contain;
-      z-index: 1000;
-      pointer-events: auto;
-      display: block;
-      text-indent: -9999px;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1em;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 250px 20px 100px calc(270px + 30px);
-    }
-
-    .gallery img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.15);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-      display: block;
-      cursor: pointer;
-    }
-
-    .gallery img.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .gallery img:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 25px rgba(255,255,255,0.3);
-    }
-
-    /* Lightbox styles */
-    .lightbox {
+    .logo-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1000;
     }
 
-    .lightbox.visible {
-      visibility: visible;
+    .logo-link {
+      position: absolute;
+      background: url('assets/logo.png') center center no-repeat;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      /* REMOVED transform translate to position by top-left */
+      pointer-events: auto;
+      transition: none; /* transitions done via JS for smooth scroll */
+    }
+
+    .scroll-content {
+      max-width: 800px;
+      margin: 120vh auto 0 auto;
+      text-align: center;
+      font-size: 1.8em;
+      line-height: 1.4em;
+      padding-top: 10vh;
+      padding-bottom: 20vh;
+    }
+
+    .sentence {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      margin-bottom: 20px;
+    }
+
+    .sentence.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .links {
+      opacity: 0;
+      transition: opacity 1s ease;
+      margin-top: 10vh;
+      line-height: 2em;
+    }
+
+    .links.visible {
       opacity: 1;
     }
 
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 12px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.5);
+    .links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2em;
+      margin: 10px 60px;
+      display: block;
+      text-align: center;
+      transition: color 0.3s;
     }
 
-    @media (max-width: 768px) {
-      .gallery {
-        padding-left: 20px;
-      }
+    .links a:hover {
+      color: gray;
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="logo">Home</a>
 
-  <div class="gallery" id="gallery"></div>
+  <!-- Clickable logo -->
+  <div class="logo-container">
+    <a href="index.html" class="logo-link" id="logo"></a>
+  </div>
 
-  <div class="lightbox" id="lightbox">
-    <img src="" alt="Zoomed image" id="lightbox-img" />
+  <!-- Scroll content -->
+  <div class="scroll-content">
+    <div class="sentence">Forged in the depths of time.</div>
+    <div class="sentence">Wrought from the bones of the earth.</div>
+    <div class="sentence">A silent witness that endured the ages.</div>
+    <div class="sentence">Endowed with wisdom long since lost.</div>
+    <div class="sentence">A deep mystery today.</div>
+
+    <div class="links" id="finalLinks">
+      <a href="info.html">Find out more</a>
+      <a href="gallery.html">Gallery</a>
+    </div>
   </div>
 
   <script>
-    const imageList = [
-      'assets/gallery/image1.png',
-      'assets/gallery/image2.png',
-      'assets/gallery/image3.png',
-      'assets/gallery/image4.png'
-    ];
+    const logo = document.getElementById('logo');
+    const sentences = document.querySelectorAll('.sentence');
+    const finalLinks = document.getElementById('finalLinks');
 
-    const gallery = document.getElementById('gallery');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
+    window.addEventListener('scroll', () => {
+      const scrollY = Math.min(window.scrollY, 300);
+      const progress = scrollY / 300;
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+      // Sizes: large = 900px, small = 270px (3x smaller)
+      const startSize = 900;
+      const endSize = 270;
+      const size = startSize + (endSize - startSize) * progress;
+
+      // Calculate centered position for the current size
+      const startLeft = (window.innerWidth / 2) - (size / 2);
+      const startTop = (window.innerHeight / 2) - (size / 2);
+
+      // Final position near top-left corner with some margin
+      const endLeft = -10;
+      const endTop = -50;
+
+      // Interpolate position and size based on scroll progress
+      const left = startLeft * (1 - progress) + endLeft * progress;
+      const top = startTop * (1 - progress) + endTop * progress;
+
+      logo.style.width = `${size}px`;
+      logo.style.height = `${size}px`;
+      logo.style.left = `${left}px`;
+      logo.style.top = `${top}px`;
+      logo.style.transform = 'none';
+
+      // Show sentences based on scroll
+      const scrollPos = window.scrollY;
+      sentences.forEach((sentence, index) => {
+        const trigger = 100 + index * 150; // tweak spacing
+        if (scrollPos > trigger) {
+          sentence.classList.add('visible');
+        } else {
+          sentence.classList.remove('visible');
         }
       });
-    }, { threshold: 0.1 });
 
-    imageList.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      img.alt = "Galeriebild";
-      img.loading = "lazy";
-      img.classList.add('zoomable');
-      img.onload = () => observer.observe(img);
-      img.addEventListener('click', () => {
-        lightboxImg.src = src;
-        lightbox.classList.add('visible');
-      });
-      gallery.appendChild(img);
-    });
-
-    // Close lightbox on click outside image
-    lightbox.addEventListener('click', (e) => {
-      if (e.target !== lightboxImg) {
-        lightbox.classList.remove('visible');
-        lightboxImg.src = '';
+      // Show links after last sentence visible
+      if (sentences[sentences.length - 1].classList.contains('visible')) {
+        finalLinks.classList.add('visible');
+      } else {
+        finalLinks.classList.remove('visible');
       }
     });
   </script>
