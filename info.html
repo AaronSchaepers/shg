@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>More Info</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Georgia', serif;
+      overflow-x: hidden;
+    }
+
+    .logo {
+      position: fixed;
+      top: -50px;
+      left: -10px;
+      width: 270px;
+      height: 270px;
+      background: url('assets/logo.png') center center no-repeat;
+      background-size: contain;
+      z-index: 1000;
+      pointer-events: auto; /* changed from none so the link works */
+      display: block; /* ensure <a> behaves like a block for width/height */
+      text-indent: -9999px; /* hide text if any inside */
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 150px 20px 100px 20px;
+    }
+
+    .text-block {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+      margin-bottom: 100px;
+    }
+
+    .text-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.6em;
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="logo">Home</a>
+
+  <div class="content">
+    <div class="text-block">
+      <h2>The discovery</h2>
+      <p>
+        The story of Stonehenge Garching begins with the construction of a new physics laboratory on a research
+        campus close to the pulsating town of Garching, near Munich.
+      </p>
+      <p>
+        The new laboratory was to be located at the
+        north-eastern outskirts of the research campus, where modern urbanity gives way to uncharted wilderness. The
+        frontier of civilization had to be pushed further into the Bavarian badlands to clear the ground of the construction site,
+        claiming the lives of five workers that fell victim to tropical diseases and the uncontrollable fauna of that area.
+      </p>
+      <p>
+        It was in
+        the course of this dangerous pioneering effort that workers stumbled across Stonehenge Garching, waking it from
+        age-long hibernation hidden in impenetrable woods. Recognizing it at once as a historical site of incredible
+        importance, the authorities revised the original building plans to ensure the preservation of this new discovery.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h2>The origins</h2>
+      <p>
+        The origins of this prehistoric site are shrouded in the mist of time. A radiocarbon analysis tentatively dates
+        the time of creation back to the 1830s, however scientists are at a loss to explain the details of
+        its construction.
+      </p>
+      <p>
+        The Garching region is known to have been inhabited by a scattered and primitive people at
+        that time, while the creation of Stonehenge Garching would have required manpower and craftsmanship comparable
+        to that of an ancient civilization, well beyond the scope of the worthy local population.
+      </p>
+      <p>
+        The scientific
+        community must therefore turn to other theories to explain the origins of Stonehenge Garching, many of which
+        have emerged since the discovery. They attribute the construction to a variety of external powers, including
+        aliens, an obscure phallic cult, frustrated astrophysicists, and most controversial of all, an artist.
+      </p>
+    </div>
+
+    <div class="text-block">
+      <h2>The purpose</h2>
+      <p>
+        The theories regarding the purpose of Stonehenge Garching differ according to the supposed creator.
+      </p>
+      <p>
+        The alien theory claims that Stonehenge Garching is the burial site of several extraterrestrial individuals who
+        perished during a botched research exchange with a young Dr. Theodor Hänsch. Brutal experiments on early
+        frequency combs (lasers) may have ended in tragedy, while also giving rise to the quote that „anything will lase
+        if you hit it hard enough amk“. Presumably, the aliens’ metabolism did not respond well to atomic population
+        inversion. Critics of this theory point out that Dr. Theodor Hänsch was in fact born two decades after the
+        alleged time of construction and that it is very questionable that space-traveling aliens, with the whole planet
+        open to them, would visit Garching.
+      </p>
+      <p>
+        The theory of a phallic cult being at the bottom of Stonehenge Garching explains it as a place of worship. In
+        its favor it can be said that most research institutions in close proximity to Stonehenge Garching have a long
+        history of very hierarchical and overwhelmingly male-dominated structures. Such environments have repeatedly
+        been proven to promote the formation of said cults, the most prominent historical examples being the military,
+        the church and conservative governments. A weak point to this hypothesis is that it puts a doubtfully low bound
+        on the artistic skill of the cult members, or instead postulates a dramatic change in human anatomy since the
+        erection of the site.
+      </p>
+      <p>
+        Those supporting the theory of frustrated astrophysicists state that the sometime in the late 18th century, the
+        prolonged failure to detect the faintest trace of dark matter or energy may have caused parts of the community
+        simply to crack. According to this theory, Stonehenge Garching was then build out of the need to give physical
+        form to the state of complete inner upheaval into which the desperate scientists were plunged by the continued
+        absence of significant data. It is speculated that they chanted in plain LaTeX to appease whatever gods they
+        believed responsible for their scientific dead end. When asked to comment, members of the TUM chair of
+        Theoretical Elementary Particle Physics refused to interrupt their attempts to frantically renormalize the
+        departmental coffee budget, which had blown up in their faces after they assumed it to be a small perturbation
+        (story of their lives).
+      </p>
+      <p>
+        The artist theory proposes that Stonehenge Garching is not a scientific or religious relic at all, but a
+        conceptual art installation. According to this view, the stones were arranged by an anonymous artist aiming to
+        explore themes like critical space abundance, the color grey, and the inspiring solidity of rocks. Critics point
+        out that this is completely ridiculous, while supporters counter that that is precisely the point, that the
+        critics clearly didn’t understand the deconstruction of objecthood in a post-anthropocentric epistemological
+        framework, and that they should read Karl Popper and Adorno before talking to them again. Concluding, it can be
+        said that in the context of contemporary art this theory, while unlikely, cannot be fully ruled out.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const blocks = document.querySelectorAll('.text-block');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    blocks.forEach(block => observer.observe(block));
+  </script>
+</body>
+</html>
